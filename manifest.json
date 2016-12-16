@@ -1,0 +1,6 @@
+{
+  "name": "mistory_ui",
+  "short_name": "mistory_ui",
+  "start_url": "/",
+  "display": "standalone"
+}

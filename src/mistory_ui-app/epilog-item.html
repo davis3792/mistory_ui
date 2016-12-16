@@ -1,0 +1,63 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+
+<dom-module id="epilog-item">
+  <template>
+	<style>
+		:host {
+		display: block
+		}
+	</style>
+
+	<paper-card>
+		<div on-tap="_toggleCollapse"> [[item.title]] ([[item.source.Title]])</div>
+		<iron-collapse id="collapse">
+			<div>
+				<a href="/epilogs/{{item.id}}">[[item.detail]]</a>
+			</div>
+		</iron-collapse>
+	</paper-card>
+  </template>
+
+  <script>
+    Polymer({
+
+	is: 'epilog-item',
+
+	properties: {
+		item: Object,
+		readonly: {
+			type: Boolean,
+			value: true
+		}
+	},
+	/*
+	observers: [
+		'_routeChanged(route.*)',
+		'_routeDataChanged(routeData.*)'
+	],
+
+	_routeChanged: function(route) {
+		//console.log("routeChanged route:", route);
+	},
+	_routeDataChanged: function(routeData) {
+		//console.log("routeDataChanged routeData:", routeData);
+	},
+	*/
+
+	_edit: function(e) {
+		this.readonly = false;
+
+	},
+	_toggleCollapse: function(e) {
+		this.$$('#collapse').toggle();
+	}
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,84 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="epilog-list.html">
+<link rel="import" href="epilog-item.html">
+<link rel="import" href="epilog-detail.html">
+
+<dom-module id="mistory_ui-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <app-location route="{{route}}"></app-location>
+
+    <app-route 
+		route="{{route}}"
+		pattern="/:page"
+     		data="{{routeData}}"
+		tail="{{subroute}}"
+  		active="{{listActive}}">
+    </app-route>
+
+    <app-route 
+		route="{{subroute}}"
+		pattern="/:id"
+  		data="{{subrouteData}}"
+  		active="{{detailActive}}">
+    </app-route>
+
+    <div>route.path "{{route.path}}" subroute.path "{{subroute.path}}"</div>
+    <div>routeData.page "{{routeData.page}}" subrouteData.id "{{subrouteData.id}}"</div>
+    <div>listActive "{{listActive}}" detailActive "{{detailActive}}"</div>
+
+    <iron-pages selected="[[page]]" attr-for-selected="name" selected-attribute="visible">
+	<epilog-list name="list"></epilog-list>
+	<epilog-detail name="epilogs" data-id="[[subrouteData.id]]"></epilog-detail>
+    </iron-pages>
+
+  </template>
+
+  <script>
+    Polymer({
+
+	is: 'mistory_ui-app',
+
+	properties: {
+		page: {
+			type: String,
+			reflectToAttribute: true,
+			observer: '_pageChanged'
+		}
+	},
+
+	observers: [
+		'_routePageChanged(routeData.page)',
+		'_subrouteIdChanged(subrouteData.id)'
+	],
+
+	_routePageChanged: function(page) {
+		console.log("_routePageChanged page passed in:'" + page +"' while this.page is " + this.page);
+		this.page = page || 'list';
+		console.log("_routePageChanged this.page is now " + this.page);
+	},
+	_subrouteIdChanged: function(id) {
+		console.log("_subrouteIdChanged: ", id);
+	},
+
+	_pageChanged: function(page, oldPage) {
+		console.log("_pageChanged: page changed...who cares: page: " + page + " old page: " + oldPage);
+	},
+    });
+
+  </script>
+</dom-module>

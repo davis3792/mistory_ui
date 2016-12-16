@@ -1,0 +1,69 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="epilog-item.html">
+
+<dom-module id="mistory_ui-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route route="{{route}}"></app-route>
+
+        <div>
+                <paper-input label="find a story" value="{{searchString}}" ></paper-input>
+        </div>
+        <iron-ajax 
+                auto
+                url="http://localhost:3001/api/v1/epilogs?search={{searchString}}"
+                last-response="{{epilogs}}"
+                headers='{"Authorization" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBpa2V5IiwiYXBwTmFtZSI6Im1pc3RvcnkiLCJpYXQiOjE0Nzc2MTYyMzN9.jp2s5d2pQHo4DT6nMozb3t_XqdXFeDAbCKS12pMD6AA"}'
+                handleAs="json">
+        </iron-ajax>
+
+        <!-- <iron-list id="epiList" items="{{epilogs}}" as="item" indexAs="index" selection-enabled> -->
+	<iron-list id="epiList" items="{{epilogs}}" as="item">
+		<template>
+			<epilog-item item=[[item]]></epilog-item>
+		</template>
+	</iron-list>
+
+
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'mistory_ui-app',
+
+	properties: {
+		route: {
+			type: Object,
+			observer: '_routeChanged'
+		}
+	},
+
+	ready: function() {
+      		console.log("ready route=", this.route);
+		this.resolveUrl('epilist-' + page + '.html');
+	},
+
+	_routeChanged: function() {
+      		console.log("route=", this.route);
+	}
+
+    });
+
+  </script>
+</dom-module>

@@ -1,0 +1,47 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+
+<dom-module id="epilog-item">
+  <template>
+	<style>
+		:host {
+		display: block
+		}
+	</style>
+
+	<paper-card>
+	<div on-tap="_toggleCollapse"> [[item.title]] ([[item.source.Title]])</div>
+	<iron-collapse id="collapse">
+			<paper-input  readonly=[[readonly]] value=[[item.detail]]></paper-input>
+			<!-- <paper-button on-tap="_edit">Edit</paper-button> -->
+	</iron-collapse>
+	</paper-card>
+  </template>
+
+  <script>
+    Polymer({
+
+	is: 'epilog-item',
+
+	properties: {
+		item: Object,
+		readonly: {
+			type: Boolean,
+			value: true
+		}
+	},
+	_edit: function(e) {
+		this.readonly = false;
+
+	},
+	_toggleCollapse: function(e) {
+		this.$$('#collapse').toggle();
+	}
+    });
+  </script>
+</dom-module>

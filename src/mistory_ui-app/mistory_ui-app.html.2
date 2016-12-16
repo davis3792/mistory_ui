@@ -1,0 +1,145 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="epilog-list.html">
+
+<dom-module id="mistory_ui-app">
+<template>
+	<!--
+	<style>
+		:host {
+			display: block;
+		}
+	</style>
+	-->
+
+	<!--
+	<app-location route="{{route}}"></app-location>
+	<app-route 
+		route="{{route}}"
+		pattern="{{pattern}}"
+		active="{{activeflag}}"
+  		data="{{routeData}}"
+  		tail="{{tailData}}">
+	</app-route>
+		
+	<paper-input label="route.path" value={{route.path}}></paper-input>
+	<paper-input label="pattern" value={{pattern}}></paper-input> 
+
+	<div>
+		prefix: {{route.prefix}}
+		<br>
+		path: {{route.path}}
+		<br>
+		pattern: {{pattern}}
+		<br>
+		tail: {{tailData.path}}
+		<br>
+		data: {{routeData}}
+		<br>
+		active: {{activeflag}}
+	</div>
+	-->
+
+	<iron-page
+	<epilog-list></epilog-list>
+
+	<!--
+	<app-route
+		route="{{route}}"
+		pattern="/:page"
+		data="{{routeData}}"
+		tail="{{subroute}}">
+	</app-route>
+	<iron-pages role="main" selected="[[page]]" 
+		attr-for-selected="name" selected-attribute="visible">
+
+		<epilog-list name="list" route="[[subroute]]"></epilog-list>
+	</iron-pages>
+	-->
+
+</template>
+
+  <script>
+    Polymer({
+
+      is: 'mistory_ui-app',
+
+	properties: {
+		activeflag: Boolean,
+		page: {
+			type: String,
+			reflectToAttribute: true,
+			observer: '_pageChanged'
+		},
+		route: {
+			type: Object,
+			observer: '_routeChanged'
+		},
+		tailData: {
+			type:Object,
+			observer: '_taildataChanged'
+		},
+		routeData: {
+			type:Object,
+			observer: '_dataChanged'
+		},
+		pattern: String
+	},
+
+	_taildataChanged: function() {
+      		console.log("tail data changed=", this.tailData);
+	},
+	_dataChanged: function() {
+      		console.log("data changed=", this.routeData);
+	},
+	_routeChanged: function() {
+      		console.log("route changed=", this.route);
+	},
+
+	ready: function() {
+      		console.log("ready route=", this.route);
+      		console.log("tailData=", this.tailData);
+		//console.log(this.resolveUrl('epilist-' + page + '.html'));
+		/*
+		console.log(this.resolveUrl('epilog-' + 'list' + '.html'));
+		this.importHref(
+			this.resolveUrl('epilog-' + 'list' + '.html'),
+			function(e) {
+				console.log("it loaded:", e); 
+			}, 
+			function(e) {
+				console.err("Error loading list:", e);
+			}, 
+			true);
+		*/
+	}
+
+	/*
+	_pageChanged: function(page) {
+		console.log("page changed:", page);
+		this.importHref(
+			this.resolveUrl(
+				'epilog-' + page + '.html'),
+				function() {
+					this._pageLoaded(Boolean(oldPage));
+				}, 
+				null, 
+				true);
+			}
+		}
+	},
+	*/
+
+
+    });
+
+  </script>
+</dom-module>
