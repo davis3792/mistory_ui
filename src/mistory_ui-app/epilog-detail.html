@@ -16,19 +16,32 @@
 		}
 	</style>
 
-        <iron-ajax 
-                auto
-                url="http://192.168.1.69:3001/api/v1/epilogs/{{dataId}}"
+        <iron-ajax
+		auto
+                url="http://{{apiendpoint}}:3001/api/v1/epilogs/{{dataId}}"
                 last-response="{{epilog}}"
                 headers='{"Authorization" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBpa2V5IiwiYXBwTmFtZSI6Im1pc3RvcnkiLCJpYXQiOjE0Nzc2MTYyMzN9.jp2s5d2pQHo4DT6nMozb3t_XqdXFeDAbCKS12pMD6AA"}'
+		on-response='_handleGetResponse'
                 handleAs="json">
         </iron-ajax>
 
-	<form is="iron-form" id="form" method="post" action="">
+	<div> here I am </div>
+	<paper-card>
 		<paper-input label="Title" value="{{epilog.title}}"></paper-input>
 		<paper-textarea label="Details" value="{{epilog.detail}}"></paper-textarea>
-		<paper-button raised on-tap="_submit">Submit</paper-button>
-	</form>
+		<paper-button raised on-tap="_handleSaveButton">Save</paper-button>
+	</paper-card>
+
+        <iron-ajax
+		id='put'
+		method='PUT'
+                headers='{"Authorization" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBpa2V5IiwiYXBwTmFtZSI6Im1pc3RvcnkiLCJpYXQiOjE0Nzc2MTYyMzN9.jp2s5d2pQHo4DT6nMozb3t_XqdXFeDAbCKS12pMD6AA"}'
+		content-type='application/json'
+		body='{{epilog}}'
+                url='http://{{apiendpoint}}:3001/api/v1/epilogs/{{dataId}}'
+		on-response='_handlePutResponse'
+                handleAs='json'>
+        </iron-ajax>
 
   </template>
 
@@ -45,24 +58,39 @@
 		readonly: {
 			type: Boolean,
 			value: true
-		}
+		},
+                apiendpoint: {
+                        type: String,
+                        notify: true
+                }
 	},
 
-	_submit: function(e) {
-		console.log("submitted", e);
-		//console.log("form=", this.$.form.request.body
-		var body = this.$.form.request.body;
-		console.log("body=", body);
-		Polymer.dom(event).localTarget.parentElement.submit();
+	observers: [
+		'printObj(epilog)',
+	],
+
+	_handleGetResponse: function(res, req) {
+		//console.log("_handleGetResponse headers=", req.xhr.getAllResponseHeaders());
+		console.log("_handleGetResponse headers=", req.xhr);
+		console.log("_handleGetResponse=", res);
+	},
+
+	_handleSaveButton: function(e) {
+		console.log("_handleSaveButton", e);
+		this.$.put.generateRequest();
+	},
+
+	_handlePutResponse: function(res) {
+		printObj(res);
 	},
 
 	printObj: function(o) {
 		console.log(o);
 	},
+
 	_edit: function(e) {
 		this.readonly = false;
-
-	},
+	}
     });
   </script>
 </dom-module>
