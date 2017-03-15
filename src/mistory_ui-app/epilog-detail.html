@@ -18,7 +18,7 @@
 
         <iron-ajax 
                 auto
-                url="http://localhost:3001/api/v1/epilogs/{{dataId}}"
+                url="http://192.168.1.69:3001/api/v1/epilogs/{{dataId}}"
                 last-response="{{epilog}}"
                 headers='{"Authorization" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBpa2V5IiwiYXBwTmFtZSI6Im1pc3RvcnkiLCJpYXQiOjE0Nzc2MTYyMzN9.jp2s5d2pQHo4DT6nMozb3t_XqdXFeDAbCKS12pMD6AA"}'
                 handleAs="json">
@@ -50,6 +50,10 @@
 
 	_submit: function(e) {
 		console.log("submitted", e);
+		//console.log("form=", this.$.form.request.body
+		var body = this.$.form.request.body;
+		console.log("body=", body);
+		Polymer.dom(event).localTarget.parentElement.submit();
 	},
 
 	printObj: function(o) {

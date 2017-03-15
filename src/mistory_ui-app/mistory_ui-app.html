@@ -2,14 +2,13 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-collapse/iron-collapse.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-request.html">
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-form/iron-form.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="epilog-list.html">
-<link rel="import" href="epilog-item.html">
 <link rel="import" href="epilog-detail.html">
 
 <dom-module id="mistory_ui-app">
@@ -19,6 +18,8 @@
         display: block;
       }
     </style>
+
+    <iron-request id="xhr"></iron-request> 
 
     <app-location route="{{route}}"></app-location>
 
@@ -40,10 +41,12 @@
     <div>route.path "{{route.path}}" subroute.path "{{subroute.path}}"</div>
     <div>routeData.page "{{routeData.page}}" subrouteData.id "{{subrouteData.id}}"</div>
     <div>listActive "{{listActive}}" detailActive "{{detailActive}}"</div>
+	<div> howdy </div>
+	<div> apiEndpoint "{{apiEndpoint}}" </div>
 
     <iron-pages selected="[[page]]" attr-for-selected="name" selected-attribute="visible">
-	<epilog-list name="list"></epilog-list>
-	<epilog-detail name="epilogs" data-id="[[subrouteData.id]]"></epilog-detail>
+	<epilog-list apiendpoint="{{apiEndpoint}}" name="list"></epilog-list>
+	<epilog-detail apiendpoint="{{apiEndpoint}}" name="epilogs" data-id="[[subrouteData.id]]"></epilog-detail>
     </iron-pages>
 
   </template>
@@ -58,6 +61,10 @@
 			type: String,
 			reflectToAttribute: true,
 			observer: '_pageChanged'
+		},
+		apiEndpoint: {
+			type: String,
+			notify: true
 		}
 	},
 
@@ -78,6 +85,27 @@
 	_pageChanged: function(page, oldPage) {
 		console.log("_pageChanged: page changed...who cares: page: " + page + " old page: " + oldPage);
 	},
+
+        ready: function() {
+		console.log("ready...");
+
+		var self = this;
+
+		var url = window.location.href + "config";
+		console.log("url=", url);
+
+		self.$.xhr.send({
+    			url: url,
+    			method: "GET"})
+		.then(function() {
+			var config = self.$.xhr.parseResponse();
+			jsonConfig = JSON.parse(config);
+			console.log("jsonConfig=", jsonConfig);
+			self.apiEndpoint = jsonConfig.apiEndpoint;
+			console.log("apiEndpoint=", self.apiEndpoint);
+		});
+        }
+
     });
 
   </script>

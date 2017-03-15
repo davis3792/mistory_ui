@@ -21,7 +21,7 @@
         <paper-input label="find a story" value="{{searchString}}" ></paper-input>
         <iron-ajax 
                 auto
-                url="http://localhost:3001/api/v1/epilogs?search={{searchString}}"
+                url="http://{{apiendpoint}}:3001/api/v1/epilogs?search={{searchString}}"
                 last-response="{{epilogs}}"
                 headers='{"Authorization" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXBpa2V5IiwiYXBwTmFtZSI6Im1pc3RvcnkiLCJpYXQiOjE0Nzc2MTYyMzN9.jp2s5d2pQHo4DT6nMozb3t_XqdXFeDAbCKS12pMD6AA"}'
                 handleAs="json">
@@ -30,7 +30,7 @@
         <!-- <iron-list id="epiList" items="{{epilogs}}" as="item" indexAs="index" selection-enabled> -->
 	<iron-list id="epiList" items="{{epilogs}}" as="item">
 		<template>
-			<epilog-item item=[[item]]></epilog-item>
+			<epilog-item item="[[item]]"></epilog-item>
 		</template>
 	</iron-list>
 
@@ -46,7 +46,11 @@
 	properties: {
 		route: {
 			type: Object
-		}
+		},
+                apiendpoint: {
+                        type: String,
+                        notify: true
+                }
 	},
 
 	ready: function() {
